@@ -1,72 +1,49 @@
-import tkinter
-from tkinter import *
+from tkinter import*
+from PIL import Image, ImageTk
+fen = Tk()
+taille= Frame(fen, width=900, height=600)
+taille.pack()
 
-fen=tkinter.Tk()
-my_menu=Menu(fen)
-fen.config(menu=my_menu)
-can=tkinter.Canvas(fen,width=1000,heigh=1000,bg='ivory')
-can.pack(side=TOP,padx=5,pady=5)
-
-
-        
+c = Canvas(fen, bg='white', width=1000, height=600)
+c.pack()
 
 
-# Fonction pour modifier la taille de l'image 
-def resizeImage(img, newWidth, newHeight):
-    oldWidth = img.width()
-    oldHeight = img.height()
-    newPhotoImage = PhotoImage(width=newWidth, height=newHeight)
-    for x in range(newWidth):
-        for y in range(newHeight):
-            xOld = int(x*oldWidth/newWidth)
-            yOld = int(y*oldHeight/newHeight)
-            rgb = '#%02x%02x%02x' % img.get(xOld, yOld)
-            newPhotoImage.put(rgb, (x, y))
-    return newPhotoImage
+def show_imageRouter():
+    c.create_image(0,30, image=image1)
 
-def client():
-    print("test")
-    photo=PhotoImage(file='img/index.png')
-    photo=resizeImage(photo,45,45)
-    can.create_image(200,200,  image=photo)
-    return photo
+def show_imageSwitch():
+    c.create_image(30,60, image=image2)
+
+def show_imageServer():
+        c.create_image(30,100, image=image3)
+
+
+
+button = Button(taille, text = "Router",command=show_imageRouter)
+button.pack(side = LEFT)
+button = Button(taille, text = "Switch", command=show_imageSwitch)
+button.pack(side = LEFT)
+
+button = Button(taille, text = "Server", command=show_imageServer)
+button.pack(side = LEFT)
+
     
+imageFile = "client.png"
+
+image1 = ImageTk.PhotoImage(Image.open(imageFile))
+
+imageFile = "switch.png"
+image2 = ImageTk.PhotoImage(Image.open(imageFile))
+
+imageFile = "router.png"
+image3 = ImageTk.PhotoImage(Image.open(imageFile))
 
 
 
-def drag1(event):
-    global photo
-    photo = PhotoImage(file = "img/index.png") 
-    photo=resizeImage(photo,45,45)
-    x=event.x
-    y=event.y
-    #Impossible de sortir 
-    if x <=0 or x>=1000 or y <=0 or y>=1000 : #Empeche la photo de sortir 
-        if x<0 :
-            x=0
-        elif x>1000 :
-            x=1000
-        if y<0:
-            y=0
-        elif y>1000:
-            y=1000
-    can.create_image(x, y,  image=photo)
+# Creation of a menu File > Exit
+menu = Menu(fen)
+fen.config(menu=menu)
 
 
-
-file_menu=Menu(my_menu)
-my_menu.add_cascade(label="Outils",menu=file_menu)
-file_menu.add_command(label="Client",command=lambda:client())
-file_menu.add_command(label="Router")
-file_menu.add_command(label="Switch") 
-
-   
-    
-    
-can=tkinter.Canvas(fen,width=1000,heigh=1000,bg='ivory')
-can.pack(side=TOP,padx=5,pady=5)
-
-
-can.bind('<B1-Motion>',drag1)
 
 fen.mainloop()
